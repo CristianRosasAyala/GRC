@@ -13,7 +13,8 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "laravelcollective/html": "5.*"
+        "laravelcollective/html": "5.*",
+        "nesbot/carbon": "^1.26.3"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -27,7 +28,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
     },
     "extra": {
         "laravel": {

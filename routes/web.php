@@ -1,5 +1,6 @@
 <?php
 //Ruta inicial
+
 Route::get('/', function () {
     return view('welcome');
 });
