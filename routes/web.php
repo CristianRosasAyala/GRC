@@ -47,6 +47,6 @@ Auth::routes();
 
 //Listados
 Route::get('municipios', 'MunicipioController@index')->name('municipios.alllist');
-Route::get('provincias', 'ProvinciaController@index')->name('provincias.alllist');
+Route::get('entidades', 'EntidadController@index')->name('entidades.alllist');
 
 Route::get('/home', 'HomeController@index')->name('home');

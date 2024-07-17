@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cliente;
-use App\Provincia;
+use App\Entidad;
 use App\Municipio;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
@@ -56,9 +56,9 @@ class ClienteController extends Controller {
      */
     public function create() {
         auth()->user()->authorizeRoles(['admin','secretario']);
-        $provincias = Provincia::all('region_name', 'id');
-        $municipios = Municipio::all('city_name','id','region_id');
-        return view('clientes.create', compact(['provincias','municipios']));
+        $entidades = Entidad::all('name', 'id');
+        $municipios = Municipio::all('name','id','estado_id');
+        return view('clientes.create', compact(['entidades','municipios']));
     }
 
     /**
@@ -67,6 +67,8 @@ class ClienteController extends Controller {
      * @return Response
      */
     public function store() {
+
+        
         auth()->user()->authorizeRoles(['admin','secretario']);
         $rules = array(
             'codigo' => 'required|alpha_num|unique:clientes|max:190',
@@ -74,7 +76,7 @@ class ClienteController extends Controller {
             'cif' => 'required|alpha_num|unique:clientes|max:15',
             'direccion' => 'required|max:100',
             'municipios' => 'max:100',
-            'provincias' => 'max:100',
+            'entidades' => 'max:100',
             'fechainiciocontrato' => 'required|date',
             'fechafincontrato' => 'required|date|after:fechainiciocontrato',
             'numeroreconocimientoscontratados' => 'required|numeric'
@@ -86,7 +88,7 @@ class ClienteController extends Controller {
                             ->withErrors($validator)
                             ->withInput(Input::except('password'));
         } else {
-
+            
             $cliente = new Cliente();
 
             $cliente->codigo = Input::get('codigo');
@@ -94,7 +96,7 @@ class ClienteController extends Controller {
             $cliente->cif = Input::get('cif');
             $cliente->direccion = Input::get('direccion');
             $cliente->municipio = Input::get('municipios');
-            $cliente->provincia = Input::get('provincias');
+            $cliente->entidad = Input::get('entidad');
             $cliente->fechainiciocontrato = Input::get('fechainiciocontrato');
             $cliente->fechafincontrato = Input::get('fechafincontrato');
             $cliente->numeroreconocimientoscontratados = Input::get('numeroreconocimientoscontratados');
@@ -113,8 +115,27 @@ class ClienteController extends Controller {
      * @return a view.
      */
     public function show($id) {
-        $cliente = Cliente::getCliente($id);
-        return view('clientes.show')->with('cliente', $cliente[0]);
+        $cliente = Cliente::getCliente($id)[0];
+
+    // Recuperar el nombre de la entidad del cliente
+    $entidad = Entidad::find($cliente->entidad);
+    if ($entidad) {
+        $cliente->entidad = $entidad->name;
+    } else {
+        $cliente->entidad = 'No especificado'; // O manejar el caso en que no se encuentre la entidad
+    }
+
+    // Recuperar el nombre del municipio del cliente
+    $municipio = Municipio::find($cliente->municipio);
+    if ($municipio) {
+        $cliente->municipio = $municipio->name;
+    } else {
+        $cliente->municipio = 'No especificado'; // O manejar el caso en que no se encuentre el municipio
+    }
+        
+        
+        
+        return view('clientes.show')->with('cliente', $cliente);
     }
 
     /**
@@ -126,9 +147,9 @@ class ClienteController extends Controller {
     public function edit($id) {
         auth()->user()->authorizeRoles(['admin','secretario']);
         $cliente = Cliente::getCliente($id)[0];
-        $provincias = Provincia::all('region_name', 'id');
-        $municipios = Municipio::all('city_name','id','region_id');
-        return view('clientes.edit', compact(['cliente','provincias','municipios']));
+        $entidades = Entidad::all('name', 'id');
+        $municipios = Municipio::all('name','id','estado_id');
+        return view('clientes.edit', compact(['cliente','entidades','municipios']));
         //return view("clientes.edit")->with('cliente', $cliente[0]);
     }
 
@@ -146,7 +167,7 @@ class ClienteController extends Controller {
             'cif' => 'alpha_num|max:15|unique:clientes,cif,' . $id . ',id',
             'direccion' => 'required|max:100',
             'municipios' => 'max:100',
-            'provincias' => 'max:100',
+            'entidades' => 'max:100',
             'fechainiciocontrato' => 'required|date',
             'fechafincontrato' => 'required|date|after:fechainiciocontrato',
             'numeroreconocimientoscontratados' => 'required|numeric'
@@ -166,12 +187,14 @@ class ClienteController extends Controller {
                                 'razonsocial' => Input::get('razonsocial'),
                                 'cif' => Input::get('cif'),
                                 'direccion' => Input::get('direccion'),
-//                                'municipio' => Input::get('municipios'),
-//                                'provincia' => Input::get('provincias'),
+//                               'municipio' => Input::get('municipios'),
+//                               'entidad' => Input::get('entidad'),
                                 'fechainiciocontrato' => Input::get('fechainiciocontrato'),
                                 'fechafincontrato' => Input::get('fechafincontrato'),
                                 'numeroreconocimientoscontratados' => Input::get('numeroreconocimientoscontratados')
             ]);
+
+            dd('todofine');
             \Session::flash('message', 'Cliente actualizado');
             return \Redirect::to('clientes');
         }
@@ -209,10 +232,29 @@ class ClienteController extends Controller {
      * @return a view with and the list of the clients.
      */
     public function clientepdf($id)
-    {        
-        $cliente = Cliente::getCliente($id)[0];
+{        
+    // Obtener el cliente desde la base de datos
+    $cliente = Cliente::getCliente($id)[0];
 
-        $pdf = PDF::loadView("clientes.pdf", compact(['cliente']));
-        return $pdf->download("cliente".$cliente->codigo."".$cliente->razonsocial.".pdf");      
+    // Recuperar el nombre de la entidad del cliente
+    $entidad = Entidad::find($cliente->entidad);
+    if ($entidad) {
+        $cliente->entidad = $entidad->name;
+    } else {
+        $cliente->entidad = 'No especificado'; // O manejar el caso en que no se encuentre la entidad
     }
+
+    // Recuperar el nombre del municipio del cliente
+    $municipio = Municipio::find($cliente->municipio);
+    if ($municipio) {
+        $cliente->municipio = $municipio->name;
+    } else {
+        $cliente->municipio = 'No especificado'; // O manejar el caso en que no se encuentre el municipio
+    }
+
+    // Generar el PDF utilizando la vista "clientes.pdf" y los datos del cliente
+    $pdf = PDF::loadView("clientes.pdf", compact('cliente'));
+    return $pdf->download("cliente".$cliente->codigo."".$cliente->razonsocial.".pdf");
+}
+
 }

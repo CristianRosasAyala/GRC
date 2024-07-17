@@ -7,7 +7,7 @@ class ProvinciaController extends Controller
 {
     public function index()
     {
-        $provincias = Entidad::all();
-        return $provincias;
+        $entidades = Entidad::all();
+        return $entidades;
     }
 }

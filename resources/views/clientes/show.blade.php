@@ -13,8 +13,8 @@
     <strong>Nombre:</strong> {{ $cliente->razonsocial }}<br>
     <strong>CIF/NIF:</strong> {{ $cliente->cif}}<br>
     <strong>Dirección:</strong> {{ $cliente->direccion}}<br>
-    <strong>Municipio:</strong> {{ $cliente->city_name}}<br>
-    <strong>Provincia:</strong> {{ $cliente->region_name}}<br>
+    <strong>Municipio:</strong> {{ $cliente->municipio}}<br>
+    <strong>Provincia:</strong> {{ $cliente->entidad}}<br>
     <p>
     <h4><strong>Contrato</strong></h4>
     <br>

@@ -46,7 +46,7 @@ class User extends Authenticatable {
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
     
-    //Cruzamos la tabla de clientes con municipios y provincias.
+    //Cruzamos la tabla de clientes con municipios y entidades.
     public static function allUser() {
         $listado = DB::table('users')->join('role_user', 'role_user.user_id', '=', 'users.id')
                 ->join('roles', 'roles.id', '=', 'role_user.role_id')

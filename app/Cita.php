@@ -16,7 +16,7 @@ class Cita extends Model {
         'numeroempleadosasistentes'
     ];
 
-    //Cruzamos la tabla de clientes con municipios y provincias.
+    //Cruzamos la tabla de clientes con municipios y entidades.
     public static function allAppointment() {
         $listado = DB::table('citas')->join('clientes', 'clientes.id', '=', 'citas.cliente_id')
                 ->select('citas.*', 'clientes.razonsocial')
@@ -46,7 +46,7 @@ class Cita extends Model {
         return $listado;
     }
 
-    //Cruzamos la tabla de clientes con municipios y provincias y filtramos por el id.
+    //Cruzamos la tabla de clientes con municipios y entidades y filtramos por el id.
     public static function getCita($id) {
         $listado = DB::table('citas')->join('clientes', 'clientes.id', '=', 'citas.cliente_id')
                 ->where('citas.id', '=', $id)

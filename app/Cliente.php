@@ -12,8 +12,7 @@ class Cliente extends Model {
 
     protected $table = 'clientes';
     protected $fillable = [
-        'codigo', 'razonsocial', 'nombre', 'cif', 'direccion', 'municipio',
-        'provincia', 'fechainiciocontrato', 'fechafincontrato',
+        'codigo', 'razonsocial', 'nombre', 'cif', 'direccion', 'municipio', 'fechainiciocontrato', 'fechafincontrato',
         'numeroreconocimientoscontratados',
         'entidad'
     ];
@@ -21,8 +20,8 @@ class Cliente extends Model {
     //Todos los clientes
     public static function allClient() {
         $listado = DB::table('clientes')->join('municipios', 'municipios.id', '=', 'clientes.municipio')
-                ->join('provincias', 'provincias.id', '=', 'clientes.provincia')
-                ->select('clientes.*', 'municipios.city_name', 'provincias.region_name')
+                ->join('entidad', 'entidad.id', '=', 'clientes.entidad')
+                ->select('clientes.*', 'municipios.name', 'entidad.name')
                 ->get();
 
         return $listado;
@@ -31,9 +30,9 @@ class Cliente extends Model {
     //Solo los clientes con contrato activo.
     public static function onlyActives() {
         $listado = DB::table('clientes')->join('municipios', 'municipios.id', '=', 'clientes.municipio')
-                ->join('provincias', 'provincias.id', '=', 'clientes.provincia')
+                ->join('entidad', 'entidad.id', '=', 'clientes.entidad')
                 ->where('clientes.activo',true)
-                ->select('clientes.*', 'municipios.city_name', 'provincias.region_name')
+                ->select('clientes.*', 'municipios.name', 'entidad.name')
                 ->get();
 
         return $listado;
@@ -42,24 +41,24 @@ class Cliente extends Model {
     //Listado de clientes que su contrato expira dentro de un mes o menos.
     public static function expires() {
         $listado = DB::table('clientes')->join('municipios', 'municipios.id', '=', 'clientes.municipio')
-                ->join('provincias', 'provincias.id', '=', 'clientes.provincia')
+                ->join('entidad', 'entidad.id', '=', 'clientes.entidad')
                 ->where([
                     ['clientes.activo', '=', true],
                     ['clientes.fechafincontrato', '<', Carbon::now()->addDays(30)],
                     ['clientes.fechafincontrato', '>', Carbon::now()]
                 ])
-                ->select('clientes.*', 'municipios.city_name', 'provincias.region_name')
+                ->select('clientes.*', 'municipios.name', 'entidad.name')
                 ->get();
 
         return $listado;
     }
     
-    //Cruzamos la tabla de clientes con municipios y provincias.
+    //Cruzamos la tabla de clientes con municipios y entidad.
     public static function clientesConContratoActivo() {
         $listado = DB::table('clientes')->join('municipios', 'municipios.id', '=', 'clientes.municipio')
-                ->join('provincias', 'provincias.id', '=', 'clientes.provincia')
+                ->join('entidad', 'entidad.id', '=', 'clientes.entidad')
                 ->where('clientes.activo', true)
-                ->select('clientes.*', 'municipios.city_name', 'provincias.region_name')
+                ->select('clientes.*', 'municipios.name', 'entidad.name')
                 ->get();
 
         return $listado;
@@ -73,13 +72,13 @@ class Cliente extends Model {
         return $listado;
     }
 
-    //Cruzamos la tabla de clientes con municipios y provincias y filtramos por el id.
+    //Cruzamos la tabla de clientes con municipios y entidad y filtramos por el id.
     public static function getCliente($id) {
 
         $cliente = DB::table('clientes')->join('municipios', 'municipios.id', '=', 'clientes.municipio')
-                ->join('provincias', 'provincias.id', '=', 'clientes.provincia')
+                ->join('entidad', 'entidad.id', '=', 'clientes.entidad')
                 ->where('clientes.id', '=', $id)
-                ->select('clientes.*', 'municipios.city_name', 'provincias.region_name')
+                ->select('clientes.*', 'municipios.name', 'entidad.name')
                 ->get();
 
         return $cliente;

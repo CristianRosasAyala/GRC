@@ -30,7 +30,7 @@ class ValidacionesCliente extends FormRequest
             'cif'                   => 'required|alpha_num|unique:cliente|max:15',
             'direccion'             => 'required|max:100',
             'municipio'             => 'required|max:100',
-            'provincia'             => 'required|max:100',
+            'entidad'             => 'required|max:100',
             'fechainiciocontrato'   => 'required|date',
             'fechafincontrato'      => 'required|date',
             'numeroreconocimientoscontratados'    => 'required|numeric'

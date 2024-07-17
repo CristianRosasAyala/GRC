@@ -30,13 +30,13 @@
     </div>
     
     <div class="form-group">
-        {{ Form::label('provincia', 'Provincia') }}
-        {{ Form::select('provincias', $provincias->pluck('region_name', 'id'), null, array('class' => 'form-control',  'placeholder' => 'Selecciona una provincia...')) }}
+        {{ Form::label('entidad', 'Entidad') }}
+        {{ Form::select('entidad', $entidades->pluck('name', 'id'), null, array('class' => 'form-control',  'placeholder' => 'Selecciona una entidad...')) }}
     </div>
 
     <div class="form-group">
         {{ Form::label('municipio', 'Municipio') }}
-        {{ Form::select('municipios', $municipios->pluck('city_name', 'id'), null, array('class' => 'form-control',  'placeholder' => 'Selecciona un municipio...')) }}
+        {{ Form::select('municipios', $municipios->pluck('name', 'id'), null, array('class' => 'form-control',  'placeholder' => 'Selecciona un municipio...')) }}
     </div>
 
     <div class="form-group">

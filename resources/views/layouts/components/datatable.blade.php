@@ -31,8 +31,8 @@
     </div>
 
     <div class="form-group">
-        {{ Form::label('provincia', 'Provincia') }}
-        {{ Form::select('provincias') }}
+        {{ Form::label('entidad', 'Entidad') }}
+        {{ Form::select('Entidades') }}
     </div>
 
     <div class="form-group">

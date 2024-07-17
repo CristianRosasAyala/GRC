@@ -16,8 +16,8 @@
 <strong>Nombre:</strong> {{ $cliente->razonsocial }}<br>
 <strong>CIF/NIF:</strong> {{ $cliente->cif }}<br>
 <strong>Dirección:</strong> {{ $cliente->direccion }}<br>
-<strong>Provincia:</strong> {{ $cliente->region_name }}<br>
-<strong>Municipio:</strong> {{ $cliente->city_name }}<br>
+<strong>Entidad:</strong> {{ $cliente->entidad }}<br>
+<strong>Municipio:</strong> {{ $cliente->municipio }}<br>
 <br>
 <h3>Contrato</h3>
 <strong>Inicio:</strong> {{ date('d-M-y', strtotime($cliente->fechainiciocontrato)) }} <br>
