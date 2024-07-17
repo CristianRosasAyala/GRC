@@ -14,7 +14,8 @@ class Cliente extends Model {
     protected $fillable = [
         'codigo', 'razonsocial', 'nombre', 'cif', 'direccion', 'municipio',
         'provincia', 'fechainiciocontrato', 'fechafincontrato',
-        'numeroreconocimientoscontratados'
+        'numeroreconocimientoscontratados',
+        'entidad'
     ];
 
     //Todos los clientes

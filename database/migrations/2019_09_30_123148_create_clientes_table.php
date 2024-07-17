@@ -21,7 +21,7 @@ class CreateClientesTable extends Migration {
             $table->string("cif");
             $table->string("direccion")->nullable();
             $table->string("municipio");
-            $table->string("provincia");
+            $table->string("entidad");
             $table->date("fechafincontrato");
             $table->date("fechainiciocontrato");
             $table->integer("numeroreconocimientoscontratados");

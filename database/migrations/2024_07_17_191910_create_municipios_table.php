@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Municipios extends Migration
+class CreateMunicipiosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,12 @@ class Municipios extends Migration
     public function up()
     {
         Schema::create('municipios', function (Blueprint $table) {
-            $table->integer('id');
-            $table->integer('state_id');
-            $table->integer('region_id');
-            $table->string("city_name");
+            $table->increments('id');
+
+            $table->string('name');
+            $table->integer('estado_id');
+            $table->integer('number');
+
             $table->timestamps();
         });
     }

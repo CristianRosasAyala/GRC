@@ -13,9 +13,8 @@ class DatabaseSeeder extends Seeder
     {      
         //Poblados los datos necesarios para los formularios
         $this->call('PaisesSeeder');
-        $this->call('ComunidadesAutonomasSeeder');
-        $this->call('ProvinciasSeeder');
-        $this->call('MunicipiosSeeder');
+        $this->call(EntidadesTableSeeder::class);
+        $this->call(MunicipiosTableSeeder::class);
         $this->call(RoleTableSeeder::class);
         $this->call(UserTestsSeeder::class);
            

@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Provincia;
+use App\Entidad;
 
 class ProvinciaController extends Controller
 {
     public function index()
     {
-        $provincias = Provincia::all();
+        $provincias = Entidad::all();
         return $provincias;
     }
 }
